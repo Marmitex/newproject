@@ -7,21 +7,21 @@
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprite>sprites\sprite0</sprite>
-    <sprite>sprites\sprSolid</sprite>
+    <sprite>sprites\sprite1</sprite>
+    <sprite>sprites\spr_pirata</sprite>
   </sprites>
-  <backgrounds name="background"/>
+  <backgrounds name="background">
+    <background>background\background0</background>
+  </backgrounds>
   <paths name="paths"/>
   <scripts name="scripts">
-    <script>scripts\connect.gml</script>
+    <script>scripts\script0.gml</script>
   </scripts>
   <objects name="objects">
-    <object>objects\ctrlClient</object>
-    <object>objects\objPlayer</object>
-    <object>objects\objSolid</object>
+    <object>objects\object0</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
-    <room>rooms\room1</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>
