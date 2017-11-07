@@ -57,6 +57,7 @@
         case 0:
             global.playerID = buffer_read( buff, buffer_u8);
             var o = instance_create( 100, 100, objPlayer); 
+            global.database[# 3, global.playerID] = o; 
             ds_list_add( global.playerList, global.playerID);
             (o).pid = global.playerID;
         
@@ -70,7 +71,8 @@
             global.database[# 1, tmpid] = yy;
             if ds_list_find_index( global.playerList, tmpid) = -1{
                 ds_list_add( global.playerList, tmpid);
-                var o = instance_create( 100, 100, objPlayer); 
+                var o = instance_create( 100, 100, objPlayer);
+                global.database[# 3, tmpid] = o; 
                 (o).pid = tmpid           
             }
 
@@ -87,9 +89,36 @@
                 (o).pid = tmpid;        
             }
 
-        
         break;
+ 
+        case 3:
+            var tmpid = buffer_read( buff, buffer_u8);
+            var tmpcid = buffer_read( buff, buffer_u8);
+            global.database[# 3, tmpid].cannon = true;
+            global.database[# 3, tmpid].cid = tmpcid;
+        break;       
+
+        case 4:
+            var tmpcid = buffer_read( buff, buffer_u8);
+            var tmpaa = buffer_read( buff, buffer_s16);
+            global.cannonDatabase[# 1, tmpcid] = tmpaa;
+        break;       
+                
+        case 5:
+            var tmpid = buffer_read( buff, buffer_u8);
+            global.database[# 3, tmpid].cannon = false;
+        break;  
         
+        case 6:
+            var tmpcid = buffer_read( buff, buffer_u8);
+            var tmpaa = buffer_read( buff, buffer_s16);
+            global.cannonDatabase[# 1, tmpcid] = tmpaa;
+            var o = instance_create( global.cannonDatabase[# 2, tmpcid], global.cannonDatabase[# 3, tmpcid], objBall);  
+            (o).speed = 20;
+            (o).direction = global.cannonDatabase[# 1, tmpcid];
+
+        
+        break; 
     }   
     
 } 

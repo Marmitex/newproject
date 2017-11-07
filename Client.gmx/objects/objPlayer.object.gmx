@@ -8,6 +8,31 @@
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>sprSolid</maskName>
   <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>cannon = false;
+cid = 0;
+cdBall = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
@@ -25,74 +50,158 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>y = global.database[# 1, pid];
+            <string>///Movement
+
+
+y = global.database[# 1, pid];
 x = global.database[# 0, pid];
 ang = global.database[# 2, pid];
 
+if cannon = false{
+    
+    if pid != global.playerID{ exit; }
+    
+    global.database[# 2, pid] = point_direction( x, y, mouse_x, mouse_y);
+    
+    buffer_seek( global.buffer, buffer_seek_start, 0);
+        buffer_write( global.buffer, buffer_u8, 2);
+        buffer_write( global.buffer, buffer_s16, global.database[# 2, pid]);
+    network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
+        
+        
+    if keyboard_check( vk_up ){
+    
+        for( var i = 5; i&gt;=0; i--){
+            if place_free( x, y-i){
+                global.database[# 1, pid] -= i;
+                break;
+            }
+        
+        }
+    
+    }
+    if keyboard_check( vk_down ){
+    
+        for( var i = 5; i&gt;=0; i--){
+            if place_free( x, y+i){
+                global.database[# 1, pid] += i;
+                break;
+            }
+        }
+        
+    }
+    
+    if keyboard_check( vk_left ){
+    
+        for( var i = 5; i&gt;=0; i--){
+            if place_free( x-i, y){
+                global.database[# 0, pid] -= i;
+                break;
+            }
+        }    
+    }
+    
+    if keyboard_check( vk_right ){
+    
+        for( var i = 5; i&gt;=0; i--){
+            if place_free( x+i, y){
+                 global.database[# 0, pid] += i;
+                 break;
+            }
+        }
+        
+    }
+    
+    if keyboard_check( vk_up )
+    or keyboard_check( vk_down )
+    or keyboard_check( vk_left )
+    or keyboard_check( vk_right ){
+    
+        buffer_seek( global.buffer, buffer_seek_start, 0);
+            buffer_write( global.buffer, buffer_u8, 1);
+            buffer_write( global.buffer, buffer_s16, x);
+            buffer_write( global.buffer, buffer_s16, y);
+        network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
+    
+    }
+
+
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///Cannon
+if cannon = true{
+
+    var near = instance_nearest( x, y, objCannon);
+    global.database[# 1, pid] = near.y + lengthdir_y( 32, near.image_angle+180);
+    global.database[# 0, pid] = near.x + lengthdir_x( 32, near.image_angle+180);
+    global.database[# 2, pid] = near.image_angle;
+       
+}
 if pid != global.playerID{ exit; }
 
-global.database[# 2, pid] = point_direction( x, y, mouse_x, mouse_y);
+if distance_to_object( objCannon ) &lt; 50
+and keyboard_check_pressed( ord("E") )
+and cannon = false{
 
-buffer_seek( global.buffer, buffer_seek_start, 0);
-    buffer_write( global.buffer, buffer_u8, 2);
-    buffer_write( global.buffer, buffer_s16, global.database[# 2, pid]);
-network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
-    
-    
-if keyboard_check( vk_up ){
-
-    for( var i = 5; i&gt;=0; i--){
-        if place_free( x, y-i){
-            global.database[# 1, pid] -= i;
-            break;
-        }
-    
-    }
-
-}
-if keyboard_check( vk_down ){
-
-    for( var i = 5; i&gt;=0; i--){
-        if place_free( x, y+i){
-            global.database[# 1, pid] += i;
-            break;
-        }
-    }
-    
-}
-
-if keyboard_check( vk_left ){
-
-    for( var i = 5; i&gt;=0; i--){
-        if place_free( x-i, y){
-            global.database[# 0, pid] -= i;
-            break;
-        }
-    }    
-}
-
-if keyboard_check( vk_right ){
-
-    for( var i = 5; i&gt;=0; i--){
-        if place_free( x+i, y){
-             global.database[# 0, pid] += i;
-             break;
-        }
-    }
-    
-}
-
-if keyboard_check( vk_up )
-or keyboard_check( vk_down )
-or keyboard_check( vk_left )
-or keyboard_check( vk_right ){
-
+    var near = instance_nearest( x, y, objCannon);
     buffer_seek( global.buffer, buffer_seek_start, 0);
-        buffer_write( global.buffer, buffer_u8, 1);
-        buffer_write( global.buffer, buffer_s16, x);
-        buffer_write( global.buffer, buffer_s16, y);
+        buffer_write( global.buffer, buffer_u8, 3);
+        buffer_write( global.buffer, buffer_u8, (near).cid);
     network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
 
+
+}
+
+if cannon = true{
+
+if cdBall &gt; 0 { cdBall--; }
+
+with( objCannon ){
+    if cid = other.cid{
+    global.cannonDatabase[# 1, cid ] = point_direction( x, y, mouse_x, mouse_y);
+    }
+}
+
+buffer_seek( global.buffer, buffer_seek_start, 0);
+    buffer_write( global.buffer, buffer_u8, 4);
+    buffer_write( global.buffer, buffer_s16, global.cannonDatabase[# 1, cid ]);
+network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
+
+if keyboard_check_pressed( ord("E") ){
+
+    buffer_seek( global.buffer, buffer_seek_start, 0);
+        buffer_write( global.buffer, buffer_u8, 5);
+        buffer_write( global.buffer, buffer_u8, cid);
+    network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
+    
+    }
+
+if mouse_check_button_pressed( mb_left ) and cdBall &lt;= 0{
+    cdBall = 50;
+    buffer_seek( global.buffer, buffer_seek_start, 0);
+        buffer_write( global.buffer, buffer_u8, 6);
+    network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
+    
+    }   
 }
 </string>
           </argument>

@@ -68,10 +68,14 @@
         
         break;
 
+        
+        
+        
         case 1:
             var xx = buffer_read( buff, buffer_s16);
             var yy = buffer_read( buff, buffer_s16);
-            
+            global.playerDatabase[# 0, sockid] = xx;    
+            global.playerDatabase[# 1, sockid] = yy;  
             for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
                 if global.playerList[| i-1] != sockid{
                 
@@ -87,9 +91,12 @@
         
         break;
 
+        
+        
+        
         case 2:
-            var aa = buffer_read( buff, buffer_s16)
-            
+            var aa = buffer_read( buff, buffer_s16);
+            global.playerDatabase[# 2, sockid] = aa;              
             for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
                 if global.playerList[| i-1] != sockid{
                 
@@ -102,8 +109,98 @@
                 }                               
             }
         
+        break;
+        
+        
+        
+        
+        case 3:
+            var cid = buffer_read( buff, buffer_u8);
+            global.playerDatabase[# 4, sockid] = cid;     
+            if global.cannonDatabase[# 0,cid] = false{
+            
+                global.cannonDatabase[# 0,cid] = true;
+                     
+                for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
+                   
+                    buffer_seek( global.buffer, buffer_seek_start, 0);
+                        buffer_write( global.buffer, buffer_u8, 3);;
+                        buffer_write( global.buffer, buffer_u8, sockid);
+                        buffer_write( global.buffer, buffer_u8, cid);
+                    network_send_packet( global.playerList[| i-1], global.buffer, buffer_get_size( global.buffer) );
+                                                
+                }
+                
+            }
+            
         break;    
+
+        
+     
+           
+        case 4:
+            var aa = buffer_read( buff, buffer_s16);
+            var cid = global.playerDatabase[# 4, sockid];
+            global.cannonDatabase[# 1,cid] = aa;
+                     
+            for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
+               
+                if global.playerList[| i-1] != sockid{
+                
+                    buffer_seek( global.buffer, buffer_seek_start, 0);
+                        buffer_write( global.buffer, buffer_u8, 4);;
+                        buffer_write( global.buffer, buffer_u8, cid);
+                        buffer_write( global.buffer, buffer_s16, aa);
+                    network_send_packet( global.playerList[| i-1], global.buffer, buffer_get_size( global.buffer) );
+                    
+                }                            
+            }
+
+            
+        break;    
+        
+        
+        
+        
+       case 5:
+            var cid = buffer_read( buff, buffer_u8)
+            if global.cannonDatabase[# 0,cid] = true{
+            
+                global.cannonDatabase[# 0,cid] = false;
+                     
+                for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
+                   
+                    buffer_seek( global.buffer, buffer_seek_start, 0);
+                        buffer_write( global.buffer, buffer_u8, 5);;
+                        buffer_write( global.buffer, buffer_u8, sockid);
+                    network_send_packet( global.playerList[| i-1], global.buffer, buffer_get_size( global.buffer) );
+                                                
+                }
+                
+            }
+            
+        break;  
+        
+        
+
+        
+       case 6:
+            var cid = global.playerDatabase[# 4, sockid];
+                     
+            for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
+               
+                buffer_seek( global.buffer, buffer_seek_start, 0);
+                    buffer_write( global.buffer, buffer_u8, 6);;
+                    buffer_write( global.buffer, buffer_u8, cid);
+                    buffer_write( global.buffer, buffer_s16, global.cannonDatabase[# 1,cid]);
+                network_send_packet( global.playerList[| i-1], global.buffer, buffer_get_size( global.buffer) );
+                                            
+            }
+                
+            
+        break;         
     }
+    
 }
 
 </string>
