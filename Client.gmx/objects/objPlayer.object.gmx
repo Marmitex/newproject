@@ -28,6 +28,7 @@
             <string>cannon = false;
 cid = 0;
 cdBall = 0;
+image_speed = 0;
 </string>
           </argument>
         </arguments>
@@ -57,10 +58,8 @@ y = global.database[# 1, pid];
 x = global.database[# 0, pid];
 ang = global.database[# 2, pid];
 
-if cannon = false{
-    
-    if pid != global.playerID{ exit; }
-    
+if cannon = false and pid = global.playerID{
+
     global.database[# 2, pid] = point_direction( x, y, mouse_x, mouse_y);
     
     buffer_seek( global.buffer, buffer_seek_start, 0);
@@ -154,7 +153,7 @@ if cannon = true{
     global.database[# 1, pid] = near.y + lengthdir_y( 32, near.image_angle+180);
     global.database[# 0, pid] = near.x + lengthdir_x( 32, near.image_angle+180);
     global.database[# 2, pid] = near.image_angle;
-       
+    ang = global.database[# 2, pid];
 }
 if pid != global.playerID{ exit; }
 
@@ -188,6 +187,7 @@ network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffe
 
 if keyboard_check_pressed( ord("E") ){
 
+    cannon = false;
     buffer_seek( global.buffer, buffer_seek_start, 0);
         buffer_write( global.buffer, buffer_u8, 5);
         buffer_write( global.buffer, buffer_u8, cid);

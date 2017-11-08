@@ -116,10 +116,10 @@
         
         case 3:
             var cid = buffer_read( buff, buffer_u8);
-            global.playerDatabase[# 4, sockid] = cid;     
+  
             if global.cannonDatabase[# 0,cid] = false{
-            
-                global.cannonDatabase[# 0,cid] = true;
+                global.playerDatabase[# 4, sockid] = cid;               
+                global.cannonDatabase[# 0, cid] = true;
                      
                 for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
                    
