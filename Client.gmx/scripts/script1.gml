@@ -6,3 +6,4 @@ mapa database player
 2 angulo
 3 id do objeto player
 4 id do canhão
+5 hp

@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>init();
+countBullet = 0;
 </string>
           </argument>
         </arguments>
@@ -57,8 +58,10 @@
     switch(messid){
         case 0:
             if ds_list_find_index( global.playerList, sockid) = -1{
+                global.playerDatabase[# 5, sockid] = 100; 
                 ds_list_add( global.playerList, sockid);
-                
+                var o = instance_create( x, y, objPlayer);
+                (o).pid = sockid;
                     buffer_seek( global.buffer, buffer_seek_start, 0);
                         buffer_write( global.buffer, buffer_u8, 0);
                         buffer_write( global.buffer, buffer_u8, sockid);
@@ -198,7 +201,60 @@
             }
                 
             
-        break;         
+        break;
+        
+        
+        
+        
+        
+       case 7:
+            
+            var xx = buffer_read( buff, buffer_s16);
+            var yy = buffer_read( buff, buffer_s16);
+            var aa = buffer_read( buff, buffer_s16); 
+            global.playerDatabase[# 0, sockid] = xx;    
+            global.playerDatabase[# 1, sockid] = yy;     
+            global.playerDatabase[# 2, sockid] = aa;
+            var o = instance_create( xx, yy, objBullet);
+            (o).bid = countBullet;
+            (o).direction = aa;
+            (o).speed = 20;
+            (o).pid = sockid;
+            for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
+
+                
+                    buffer_seek( global.buffer, buffer_seek_start, 0);
+                        buffer_write( global.buffer, buffer_u8, 7);;
+                        buffer_write( global.buffer, buffer_u8, sockid);
+                        buffer_write( global.buffer, buffer_s16, countBullet);
+                        buffer_write( global.buffer, buffer_s16, xx);
+                        buffer_write( global.buffer, buffer_s16, yy);
+                        buffer_write( global.buffer, buffer_s16, aa);
+                    network_send_packet( global.playerList[| i-1], global.buffer, buffer_get_size( global.buffer) );
+                                                                
+            }
+                
+            countBullet++;
+            
+        break;
+
+        
+        
+        
+       case 8:
+            
+            var tmpid = buffer_read( buff, buffer_u8);
+             
+     
+            buffer_seek( global.buffer, buffer_seek_start, 0);
+                buffer_write( global.buffer, buffer_u8, 8);;
+                buffer_write( global.buffer, buffer_u8, tmpid);
+                buffer_write( global.buffer, buffer_s8, global.playerDatabase[# 5, tmpid]  );
+            network_send_packet( sockid, global.buffer, buffer_get_size( global.buffer) );
+
+                
+            
+        break;               
     }
     
 }

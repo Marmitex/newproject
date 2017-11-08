@@ -61,6 +61,7 @@ cursor_sprite = sprCross;
             global.database[# 3, global.playerID] = o; 
             ds_list_add( global.playerList, global.playerID);
             (o).pid = global.playerID;
+            requestAtt(global.playerID);
         
         break;
         
@@ -71,10 +72,11 @@ cursor_sprite = sprCross;
             global.database[# 0, tmpid] = xx;
             global.database[# 1, tmpid] = yy;
             if ds_list_find_index( global.playerList, tmpid) = -1{
+                requestAtt(tmpid);
                 ds_list_add( global.playerList, tmpid);
                 var o = instance_create( 100, 100, objPlayer);
                 global.database[# 3, tmpid] = o; 
-                (o).pid = tmpid           
+                (o).pid = tmpid ;          
             }
 
         
@@ -85,6 +87,7 @@ cursor_sprite = sprCross;
             var aa = buffer_read( buff, buffer_s16);
             global.database[# 2, tmpid] = aa;
             if ds_list_find_index( global.playerList, tmpid) = -1{
+                requestAtt(tmpid);
                 ds_list_add( global.playerList, tmpid);
                 var o = instance_create( 100, 100, objPlayer); 
                 global.database[# 3, tmpid] = o; 
@@ -119,8 +122,47 @@ cursor_sprite = sprCross;
             (o).speed = 20;
             (o).direction = global.cannonDatabase[# 1, tmpcid];
 
+        break; 
+        
+        case 7:
+            var tmppid = buffer_read( buff, buffer_u8);
+            tmpbid = buffer_read( buff, buffer_s16);
+            var tmpxx = buffer_read( buff, buffer_s16);
+            var tmpyy = buffer_read( buff, buffer_s16);
+            var tmpaa = buffer_read( buff, buffer_s16);
+
+            global.database[# 0, tmppid] = tmpxx;
+            global.database[# 1, tmppid] = tmpyy;  
+            global.database[# 2, tmppid] = tmpaa;
+            var o = instance_create( tmpxx, tmpyy, objBullet); 
+            (o).bid = tmpbid;
+            (o).speed = 20;
+            (o).direction = tmpaa;
+            
+
         
         break; 
+        
+        case 8:
+            var tmppid = buffer_read( buff, buffer_u8);
+            var tmphp = buffer_read( buff, buffer_s8);
+
+            global.database[# 5, tmppid] = tmphp;
+        
+        break; 
+
+        case 9:
+        
+            tmpbid = buffer_read( buff, buffer_s16);
+            with( objBullet ){
+                if bid = other.tmpbid{
+                    instance_destroy();
+                }
+            
+            }
+
+        
+        break;     
     }   
     
 } 

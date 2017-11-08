@@ -8,18 +8,20 @@
     <sound>sound\sound0</sound>
   </sounds>
   <sprites name="sprites">
-    <sprite>sprites\sprite0</sprite>
+    <sprite>sprites\sprPlayer</sprite>
     <sprite>sprites\sprSolid</sprite>
     <sprite>sprites\sprCannon</sprite>
     <sprite>sprites\sprBall</sprite>
     <sprite>sprites\sprBarc0</sprite>
     <sprite>sprites\sprCross</sprite>
+    <sprite>sprites\sprBullet</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\connect.gml</script>
     <script>scripts\script1.gml</script>
+    <script>scripts\requestAtt.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\ctrlClient</object>
@@ -27,6 +29,7 @@
     <object>objects\objSolid</object>
     <object>objects\objCannon</object>
     <object>objects\objBall</object>
+    <object>objects\objBullet</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>

@@ -7,6 +7,6 @@ global.cannonDatabase = ds_grid_create( 10, 4);
 global.playerList = ds_list_create();
 
 buffer_seek( global.buffer, buffer_seek_start, 0);
-    buffer_write( global.buffer, buffer_u8, 0);
+buffer_write( global.buffer, buffer_u8, 0);
 network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
 
