@@ -140,7 +140,7 @@ if cannon = false and pid = global.playerID{
         <exetype>2</exetype>
         <functionname></functionname>
         <codestring></codestring>
-        <whoName>self</whoName>
+        <whoName>other</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
@@ -148,12 +148,13 @@ if cannon = false and pid = global.playerID{
             <kind>1</kind>
             <string>///Cannon
 if cannon = true{
-
+    image_xscale = 3;
     var near = instance_nearest( x, y, objCannon);
     global.database[# 1, pid] = near.y + lengthdir_y( 32, near.image_angle+180);
     global.database[# 0, pid] = near.x + lengthdir_x( 32, near.image_angle+180);
     global.database[# 2, pid] = near.image_angle;
     ang = global.database[# 2, pid];
+    image_angle = ang;
 }
 if pid != global.playerID{ exit; }
 
@@ -225,7 +226,7 @@ if mouse_check_button_pressed( mb_left ) and cdBall &lt;= 0{
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_sprite_ext( sprite_index, image_index, x, y, 1, 1, ang, c_white, 1);
+            <string>draw_sprite_ext( sprite_index, image_index, global.database[# 0, pid], global.database[# 1, pid], image_xscale, 1, ang, c_white, 1);
 </string>
           </argument>
         </arguments>

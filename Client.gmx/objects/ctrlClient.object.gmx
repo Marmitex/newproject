@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>connect();
+cursor_sprite = sprCross;
 </string>
           </argument>
         </arguments>
@@ -86,6 +87,7 @@
             if ds_list_find_index( global.playerList, tmpid) = -1{
                 ds_list_add( global.playerList, tmpid);
                 var o = instance_create( 100, 100, objPlayer); 
+                global.database[# 3, tmpid] = o; 
                 (o).pid = tmpid;        
             }
 
