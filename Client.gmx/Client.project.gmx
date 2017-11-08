@@ -13,7 +13,7 @@
     <sprite>sprites\sprCannon</sprite>
     <sprite>sprites\sprBall</sprite>
     <sprite>sprites\sprBarc0</sprite>
-    <sprite>sprites\spr_miradecabelo</sprite>
+    <sprite>sprites\sprCross</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -27,7 +27,6 @@
     <object>objects\objSolid</object>
     <object>objects\objCannon</object>
     <object>objects\objBall</object>
-    <object>objects\obj_crosshair</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
