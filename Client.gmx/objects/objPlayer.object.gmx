@@ -68,7 +68,7 @@ if cannon = false and pid = global.playerID{
     network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
         
         
-    if keyboard_check( vk_up ){
+    if keyboard_check(ord("W")){
     
         for( var i = 5; i&gt;=0; i--){
             if place_free( x, y-i){
@@ -79,7 +79,7 @@ if cannon = false and pid = global.playerID{
         }
     
     }
-    if keyboard_check( vk_down ){
+    if keyboard_check(ord("S")){
     
         for( var i = 5; i&gt;=0; i--){
             if place_free( x, y+i){
@@ -90,7 +90,7 @@ if cannon = false and pid = global.playerID{
         
     }
     
-    if keyboard_check( vk_left ){
+    if keyboard_check(ord("A")){
     
         for( var i = 5; i&gt;=0; i--){
             if place_free( x-i, y){
@@ -100,7 +100,7 @@ if cannon = false and pid = global.playerID{
         }    
     }
     
-    if keyboard_check( vk_right ){
+    if keyboard_check(ord("D")){
     
         for( var i = 5; i&gt;=0; i--){
             if place_free( x+i, y){
@@ -111,10 +111,10 @@ if cannon = false and pid = global.playerID{
         
     }
     
-    if keyboard_check( vk_up )
-    or keyboard_check( vk_down )
-    or keyboard_check( vk_left )
-    or keyboard_check( vk_right ){
+    if keyboard_check(ord("W"))
+    or keyboard_check(ord("S"))
+    or keyboard_check(ord("A"))
+    or keyboard_check(ord("E")){
     
         buffer_seek( global.buffer, buffer_seek_start, 0);
             buffer_write( global.buffer, buffer_u8, 1);
