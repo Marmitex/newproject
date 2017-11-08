@@ -148,7 +148,7 @@ if cannon = false and pid = global.playerID{
             <kind>1</kind>
             <string>///Cannon
 if cannon = true{
-    image_xscale = 3;
+
     var near = instance_nearest( x, y, objCannon);
     global.database[# 1, pid] = near.y + lengthdir_y( 32, near.image_angle+180);
     global.database[# 0, pid] = near.x + lengthdir_x( 32, near.image_angle+180);
