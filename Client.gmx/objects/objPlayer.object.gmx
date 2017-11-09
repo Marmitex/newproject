@@ -6,7 +6,7 @@
   <depth>0</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
-  <maskName>sprSolid</maskName>
+  <maskName>sprMask</maskName>
   <events>
     <event eventtype="0" enumb="0">
       <action>
@@ -29,6 +29,8 @@
 cid = 0;
 cdBall = 0;
 cdShoot = 0;
+charge = false;
+chargePower = 0;
 image_speed = 0;
 </string>
           </argument>
@@ -71,7 +73,7 @@ if cannon = false and pid = global.playerID{
         
     if keyboard_check(ord("W")){
     
-        for( var i = 5; i&gt;=0; i--){
+        for( var i = 2; i&gt;=0; i--){
             if place_free( x, y-i){
                 global.database[# 1, pid] -= i;
                 break;
@@ -82,7 +84,7 @@ if cannon = false and pid = global.playerID{
     }
     if keyboard_check(ord("S")){
     
-        for( var i = 5; i&gt;=0; i--){
+        for( var i = 2; i&gt;=0; i--){
             if place_free( x, y+i){
                 global.database[# 1, pid] += i;
                 break;
@@ -93,7 +95,7 @@ if cannon = false and pid = global.playerID{
     
     if keyboard_check(ord("A")){
     
-        for( var i = 5; i&gt;=0; i--){
+        for( var i = 2; i&gt;=0; i--){
             if place_free( x-i, y){
                 global.database[# 0, pid] -= i;
                 break;
@@ -103,7 +105,7 @@ if cannon = false and pid = global.playerID{
     
     if keyboard_check(ord("D")){
     
-        for( var i = 5; i&gt;=0; i--){
+        for( var i = 2; i&gt;=0; i--){
             if place_free( x+i, y){
                  global.database[# 0, pid] += i;
                  break;
@@ -161,7 +163,7 @@ if pid = global.playerID{
 
 if distance_to_object( objCannon ) &lt; 50
 and keyboard_check_pressed( ord("E") )
-and cannon = false{
+and cannon = false and charge = false{
 
     var near = instance_nearest( x, y, objCannon);
     buffer_seek( global.buffer, buffer_seek_start, 0);
@@ -231,14 +233,22 @@ if mouse_check_button_pressed( mb_left ) and cdBall &lt;= 0{
 
 if cannon = false and pid = global.playerID{
 
-    if cdShoot &gt; 0{
+    if cdShoot &gt; 0 and charge = false{
     
     cdShoot--;
     
     }
     
-    if mouse_check_button( mb_left ) and cdShoot &lt;= 0{
-        cdShoot = 30;
+    if charge = true{
+
+        if chargePower &lt; 100{
+            chargePower += 25/60*3;
+        
+        }
+        if chargePower &gt; 100{ chargePower = 100 };    
+    }
+    if mouse_check_button( mb_left ) and cdShoot &lt;= 0 and charge = false{
+        cdShoot = 40;
          buffer_seek( global.buffer, buffer_seek_start, 0);
             buffer_write( global.buffer, buffer_u8, 7);
             buffer_write( global.buffer, buffer_s16, x);
@@ -248,7 +258,25 @@ if cannon = false and pid = global.playerID{
         
     }
     
+    if mouse_check_button_pressed( mb_right ) and cdShoot &lt;= 0 and charge = false{
+        charge = true;
     
+    }
+    if mouse_check_button_released( mb_right ) and cdShoot &lt;= 0 and charge = true{
+        cdShoot = 80;
+
+         buffer_seek( global.buffer, buffer_seek_start, 0);
+            buffer_write( global.buffer, buffer_u8, 10);
+            buffer_write( global.buffer, buffer_s16, x);
+            buffer_write( global.buffer, buffer_s16, y);
+            buffer_write( global.buffer, buffer_s16, ang);
+            buffer_write( global.buffer, buffer_s16, chargePower);
+        network_send_packet( global.socket, global.buffer, buffer_get_size( global.buffer) );
+
+        chargePower = 0;
+        charge = false;
+    }
+        
 }
 </string>
           </argument>
@@ -276,6 +304,12 @@ if cannon = false and pid = global.playerID{
 var yy = global.database[# 1, pid];
 draw_sprite_ext( sprite_index, image_index, xx, yy, image_xscale, 1, ang, c_white, 1);
 draw_healthbar( xx-16, yy-25, xx+16, yy-20, global.database[# 5, pid], c_black, c_red, c_green, 0, true, true);
+
+if charge = true{
+
+    draw_healthbar( xx-16, yy+20, xx+16, yy+25, chargePower, c_black, c_red, c_red, 0, true, true);
+
+}
 </string>
           </argument>
         </arguments>

@@ -8,6 +8,8 @@
   <sprites name="sprites">
     <sprite>sprites\sprPlayer</sprite>
     <sprite>sprites\sprBullet</sprite>
+    <sprite>sprites\sprExplosion</sprite>
+    <sprite>sprites\sprBomb</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -19,6 +21,8 @@
     <object>objects\ctrlServer</object>
     <object>objects\objPlayer</object>
     <object>objects\objBullet</object>
+    <object>objects\objBomb</object>
+    <object>objects\objExplosion</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>

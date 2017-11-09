@@ -131,15 +131,10 @@ cursor_sprite = sprCross;
             var tmpyy = buffer_read( buff, buffer_s16);
             var tmpaa = buffer_read( buff, buffer_s16);
 
-            global.database[# 0, tmppid] = tmpxx;
-            global.database[# 1, tmppid] = tmpyy;  
-            global.database[# 2, tmppid] = tmpaa;
             var o = instance_create( tmpxx, tmpyy, objBullet); 
             (o).bid = tmpbid;
             (o).speed = 20;
             (o).direction = tmpaa;
-            
-
         
         break; 
         
@@ -162,7 +157,23 @@ cursor_sprite = sprCross;
             }
 
         
-        break;     
+        break;    
+        
+        case 10:
+            var tmppid = buffer_read( buff, buffer_u8);
+            tmpbid = buffer_read( buff, buffer_s16);
+            var tmpxx = buffer_read( buff, buffer_s16);
+            var tmpyy = buffer_read( buff, buffer_s16);
+            var tmpaa = buffer_read( buff, buffer_s16);
+            var tmppp = buffer_read( buff, buffer_s16);
+            var o = instance_create( tmpxx, tmpyy, objBomb); 
+            (o).bid = tmpbid;
+            (o).speed = 20*(tmppp/100);
+            (o).direction = tmpaa;
+            
+
+        
+        break;  
     }   
     
 } 

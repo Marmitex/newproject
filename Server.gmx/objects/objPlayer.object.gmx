@@ -33,6 +33,70 @@ image_angle = global.playerDatabase[# 2, pid];
         </arguments>
       </action>
     </event>
+    <event eventtype="4" ename="objExplosion">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+if ds_list_find_index( other.targetList, id) = -1{
+    ds_list_add( other.targetList, id);
+    global.playerDatabase[# 5, pid] -= 50;
+ 
+    for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
+       
+       buffer_seek( global.buffer, buffer_seek_start, 0);
+                buffer_write( global.buffer, buffer_u8, 8);;
+                buffer_write( global.buffer, buffer_u8, pid);
+                buffer_write( global.buffer, buffer_s8, global.playerDatabase[# 5, pid]  );
+       network_send_packet( global.playerList[| i-1], global.buffer, buffer_get_size( global.buffer) );
+
+        if global.playerDatabase[# 5, pid] &lt;= 0{
+        
+        global.playerDatabase[# 5, pid] = 100;
+        global.playerDatabase[# 0, pid] = 0;
+        global.playerDatabase[# 1, pid] = 0;
+            for( var i = 1; i &lt;= ds_list_size( global.playerList ); i++){
+               
+               buffer_seek( global.buffer, buffer_seek_start, 0);
+                        buffer_write( global.buffer, buffer_u8, 8);;
+                        buffer_write( global.buffer, buffer_u8, pid);
+                        buffer_write( global.buffer, buffer_s8, global.playerDatabase[# 5, pid]  );
+               network_send_packet( global.playerList[| i-1], global.buffer, buffer_get_size( global.buffer) );
+            
+                 buffer_seek( global.buffer, buffer_seek_start, 0);
+                    buffer_write( global.buffer, buffer_u8, 1);
+                    buffer_write( global.buffer, buffer_u8, pid);
+                    buffer_write( global.buffer, buffer_s16, global.playerDatabase[# 0, pid]  );
+                    buffer_write( global.buffer, buffer_s16, global.playerDatabase[# 1, pid]  );
+                network_send_packet( global.playerList[| i-1], global.buffer, buffer_get_size( global.buffer) );
+                                                        
+            }
+            
+        }
+        
+    }
+
+}
+
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="4" ename="objBullet">
       <action>
         <libid>1</libid>

@@ -8,4 +8,6 @@
 5 = drop cannon
 6 = shootcannon
 7 = shoot
+8 = attinfo
+9 = destroy
 */
