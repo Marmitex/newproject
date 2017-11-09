@@ -117,7 +117,7 @@ if cannon = false and pid = global.playerID{
     if keyboard_check(ord("W"))
     or keyboard_check(ord("S"))
     or keyboard_check(ord("A"))
-    or keyboard_check(ord("E")){
+    or keyboard_check(ord("D")){
     
         buffer_seek( global.buffer, buffer_seek_start, 0);
             buffer_write( global.buffer, buffer_u8, 1);
