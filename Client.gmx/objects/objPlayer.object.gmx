@@ -57,6 +57,7 @@ image_speed = 0;
             <string>///Movement
 
 
+
 y = global.database[# 1, pid];
 x = global.database[# 0, pid];
 ang = global.database[# 2, pid];
